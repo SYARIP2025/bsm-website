@@ -1,0 +1,115 @@
+:root{--navy:#072146;--navy-2:#0b2a4a;--accent:#1e90ff;--muted:#8aa0bf;--card:#0f2740;--bg:#f4f7fb;--text:#eaf4ff}
+*{box-sizing:border-box}
+body{font-family:Inter,Arial,Helvetica;margin:0;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;background:linear-gradient(90deg,var(--navy),var(--navy-2));padding:12px 18px;display:flex;align-items:center;gap:12px}
+header img.logo{height:44px;border-radius:6px;background:white;padding:4px}
+#searchBar{padding:8px;border-radius:8px;border:none;width:240px;background:rgba(255,255,255,0.06);color:#fff}
+.category-bar{display:flex;gap:8px;padding:12px 18px;overflow:auto}
+.category{background:transparent;color:var(--muted);padding:8px 12px;border-radius:20px;cursor:pointer}
+.category.active{background:rgba(255,255,255,0.06);color:#fff}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:18px;padding:18px}
+aside{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{background:linear-gradient(180deg,var(--card),#0b2236);border-radius:12px;padding:10px;box-shadow:0 8px 20px rgba(0,0,0,0.2)}
+.img-wrap{height:160px;border-radius:8px;overflow:hidden;background:#072146;display:flex;align-items:center;justify-content:center}
+.btn{padding:8px 10px;border-radius:8px}
+#adminPanel{display:none!important;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s}
+#adminPanel.visible{display:block!important;opacity:1;visibility:visible;transform:translateY(0)}
+.admin-item{display:flex;justify-content:space-between;padding:8px;background:rgba(255,255,255,0.02);border-radius:8px;margin-bottom:8px}
+.modal-edit{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center}
+.modal-edit .box{background:#fff;padding:18px;border-radius:10px;color:#071427;width:420px}
+.edit-btn{background:#0275d8;color:#fff;border:none;padding:6px 8px;border-radius:6px;cursor:pointer}
+.delete-btn{background:#d9534f;color:#fff;border:none;padding:6px 8px;border-radius:6px;cursor:pointer}
+.small{font-size:12px;color:var(--muted)}
+.thumbs img{height:64px;border-radius:6px;cursor:pointer;opacity:.8;transition:opacity .15s}
+.thumbs img.active{opacity:1;border:2px solid var(--accent)}
+.main-img img{max-width:100%;max-height:100%}
+@media(max-width:900px){.layout{grid-template-columns:1fr;padding:12px}.aside{display:none}}
+
+/* ======================================================
+   ANIMASI TOMBOL WHATSAPP & TIKTOK — (DIBUAT TANPA
+   MERUBAH BARIS APAPUN DARI CSS ASLI ANDA)
+   ====================================================== */
+
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.floating-btn a {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #0f2740;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+    
+    /* animasi mengembang terus */
+    animation: pulseAnime 1.4s infinite ease-in-out;
+}
+
+.floating-btn img {
+    width: 34px;
+    opacity: 100;
+}
+
+/* ANIMASI — gaya anime */
+@keyframes pulseAnime {
+    0%   { transform: scale(1);   filter: brightness(1); }
+    50%  { transform: scale(1.18); filter: brightness(1.3); }
+    100% { transform: scale(1);   filter: brightness(1); }
+}
+
+header {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(90deg, var(--navy), var(--navy-2));
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+/* Bagian kiri: logo */
+.header-left {
+    display: flex;
+    align-items: center;
+}
+header img.logo {
+    height: 44px;
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
+}
+
+/* BAGIAN TENGAH: judul */
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.header-title {
+    font-family: "Poetsen One", sans-serif;
+    font-size: 22px;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+/* BAGIAN KANAN: Login */
+.header-right {
+    width: 60px;
+    text-align: right;
+}
