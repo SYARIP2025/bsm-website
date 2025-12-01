@@ -8,7 +8,7 @@ function renderCategories(){ const bar=document.getElementById('categoryBar'); b
 renderCategories();
 let activeCategory=null;
 function filterByCategory(cat){ activeCategory=cat; document.querySelectorAll('.category').forEach(ch=>ch.classList.remove('active')); Array.from(document.querySelectorAll('.category')).find(n=>n.textContent===(cat||'Semua')).classList.add('active'); renderProducts(); }
-function renderProducts(){ products=JSON.parse(localStorage.getItem(LS_KEY))||[]; const grid=document.getElementById('productGrid'); grid.innerHTML=''; const q=document.getElementById('searchBar').value.toLowerCase(); const list=products.filter(p=>{ if(activeCategory && p.category!==activeCategory) return false; if(q && !(p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))) return false; return true; }); list.forEach(p=>{ const card=document.createElement('div'); card.className='card fade-up'; card.innerHTML=`<div class="img-wrap"><img src="${p.images[0]}"></div><h4>${p.title}</h4><p class="small">${p.category} • ${p.seller}</p><div class="price">Rp ${Number(p.price).toLocaleString()}</div><div class="meta"><button class="btn btn-primary" onclick="openModal(${p.id},event)">Lihat</button></div>`; grid.appendChild(card); }); }
+function renderProducts(){ products=JSON.parse(localStorage.getItem(LS_KEY))||[]; const grid=document.getElementById('productGrid'); grid.innerHTML=''; const q=document.getElementById('searchBar').value.toLowerCase(); const list=products.filter(p=>{ if(activeCategory && p.category!==activeCategory) return false; if(q && !(p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))) return false; return true; }); list.slice(0,10).forEach(p=>{ const card=document.createElement('div'); card.className='card fade-up'; card.innerHTML=`<div class="img-wrap"><img src="${p.images[0]}"></div><h4>${p.title}</h4><p class="small">${p.category} • ${p.seller}</p><div class="price">Rp ${Number(p.price).toLocaleString()}</div><div class="meta"><button class="btn btn-primary" onclick="openModal(${p.id},event)">Lihat Produk</button></div>`; grid.appendChild(card); }); }
 document.getElementById('searchBar').addEventListener('input', renderProducts);
 renderProducts();
 function openModal(id,e){ if(e) e.stopPropagation(); const p=products.find(x=>x.id===id); if(!p) return alert('Tidak ditemukan'); showModal(p); }
@@ -22,6 +22,10 @@ function renderAdminList(){ products=JSON.parse(localStorage.getItem(LS_KEY))||[
 renderAdminList();
 const adminForm=document.getElementById('adminForm'); const adminCategory=document.getElementById('adminCategory');
 function populateAdminCat(){ adminCategory.innerHTML=''; categories.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; adminCategory.appendChild(o); }) }
+
+function populateEditCat(){ const sel=document.getElementById('editCategory'); if(!sel) return; sel.innerHTML=''; categories.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); }) }
+
+populateEditCat();
 populateAdminCat();
 adminForm.addEventListener('submit', async function(e){ e.preventDefault(); const title=document.getElementById('adminTitle').value.trim(); const price=Number(document.getElementById('adminPrice').value)||0; const desc=document.getElementById('adminDesc').value.trim(); const category=document.getElementById('adminCategory').value; const files=document.getElementById('adminImages').files; if(!title) return alert('Nama produk harus diisi'); if(files.length===0) return alert('Pilih minimal 1 gambar'); const urls=[]; for(let i=0;i<files.length;i++){ const f=files[i]; urls.push(URL.createObjectURL(f)); } const id=products.length?Math.max(...products.map(p=>p.id))+1:1; const newP={id,title,price,desc,category,seller:'BERKAH SETIA MAJU',images:urls}; products.unshift(newP); localStorage.setItem(LS_KEY,JSON.stringify(products)); adminForm.reset(); renderProducts(); renderAdminList(); alert('Produk berhasil ditambahkan (local).'); });
 function deleteProduct(id){ if(!confirm('Yakin ingin menghapus produk ini?')) return; products=JSON.parse(localStorage.getItem(LS_KEY))||[]; products=products.filter(p=>p.id!==id); localStorage.setItem(LS_KEY,JSON.stringify(products)); renderProducts(); renderAdminList(); alert('Produk dihapus.'); }
@@ -33,4 +37,9 @@ document.getElementById('exportBtn').addEventListener('click', function(){ const
 document.getElementById('importBtn').addEventListener('click', ()=>document.getElementById('importFile').click());
 document.getElementById('importFile').addEventListener('change', function(e){ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const arr=JSON.parse(r.result); if(Array.isArray(arr)){ localStorage.setItem(LS_KEY,JSON.stringify(arr)); products=arr; renderProducts(); renderAdminList(); alert('Import sukses'); } else alert('JSON invalid'); } catch(err){ alert('Gagal import'); } }; r.readAsText(f); });
 
-
+// overlay click to close when clicking outside modal
+document.getElementById('overlay').addEventListener('click', function(e){
+  if(e.target.id === 'overlay') closeModal();
+});
+// close modal with Escape key
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeModal(); closeEditModal(); } });
