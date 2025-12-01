@@ -1,0 +1,78 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Detail Produk - BERKAH SETIA MAJU</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="product-page">
+<header class="sp-header product-header">
+  <div class="sp-header-left">
+    <a href="index.html"><img class="logo" src="assets/logo.png" alt="Logo" /></a>
+  </div>
+  <div class="sp-header-center">
+    <input id="searchBarProduct" placeholder="Cari produk..." />
+  </div>
+  <div class="sp-header-right">
+    <div style="width:48px"></div>
+  </div>
+</header>
+
+<main class="product-main">
+  <div class="product-container">
+    <div class="product-gallery">
+      <div class="product-main-img"><img id="prodMainImg" src="" alt=""></div>
+      <div class="product-thumbs" id="prodThumbs"></div>
+    </div>
+    <div class="product-info">
+      <h1 id="prodTitle">Nama Produk</h1>
+      <div class="prod-meta small" id="prodMeta"></div>
+      <div class="prod-price" id="prodPrice"></div>
+      <div class="prod-desc" id="prodDesc"></div>
+    </div>
+  </div>
+</main>
+
+<!-- Bottom action bar like marketplace -->
+<div class="action-bar">
+  <button id="btnChat" class="btn action-chat">Chat Penjual</button>
+  <button id="btnAddCart" class="btn action-cart">Tambah Keranjang</button>
+  <button id="btnBuy" class="btn action-buy">Beli Sekarang</button>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+// product page renderer: read id from query, find product from localStorage
+(function(){
+  const params = new URLSearchParams(location.search);
+  const id = Number(params.get('id'))||null;
+  const LS_KEY='berkah_products_v1';
+  const products = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+  const p = products.find(x=>x.id===id) || products[0] || null;
+  if(!p){ document.getElementById('prodTitle').textContent='Produk tidak ditemukan'; return; }
+  document.getElementById('prodMainImg').src = p.images && p.images[0] ? p.images[0] : 'assets/sample-product.png';
+  document.getElementById('prodTitle').textContent = p.title;
+  document.getElementById('prodMeta').textContent = p.category + ' • ' + p.seller;
+  document.getElementById('prodPrice').textContent = 'Rp ' + Number(p.price).toLocaleString();
+  document.getElementById('prodDesc').textContent = p.desc || 'Tidak ada deskripsi.';
+  const thumbs = document.getElementById('prodThumbs'); thumbs.innerHTML='';
+  (p.images||[]).forEach((u, i)=>{
+    const im = document.createElement('img');
+    im.src = u;
+    im.className = 'thumb-item';
+    im.onclick = ()=>{ document.getElementById('prodMainImg').src = u; }
+    thumbs.appendChild(im);
+  });
+  document.getElementById('btnChat').addEventListener('click', ()=> location.href='https://wa.me/6287798825962');
+  document.getElementById('btnBuy').addEventListener('click', ()=> alert('Fungsi beli belum terhubung.'));
+  document.getElementById('btnAddCart').addEventListener('click', ()=> alert('Ditambahkan ke keranjang (simulasi).'));
+  // copy search input behavior
+  const sb = document.getElementById('searchBarProduct');
+  if(sb){ sb.addEventListener('input', (e)=>{ localStorage.setItem('lastSearch', e.target.value); location.href='index.html'; }); }
+})();
+</script>
+
+</body>
+</html>
