@@ -292,4 +292,53 @@ main { padding: 12px; }
   .product-info { flex:1; padding-bottom:100px; }
   .action-bar { max-width:980px; margin:0 auto; left:0; right:0; }
 }
+/* =============================
+   FIX TAMPILAN DESKTOP SHOPEE
+   ============================= */
+
+@media(min-width: 900px) {
+
+    /* Grid 4–5 kolom seperti Shopee desktop */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+
+    /* Card kembali ke model tegak (bukan horizontal) */
+    .card .card-link {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    /* Gambar produk square & full-width */
+    .card .img-wrap {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 10px 10px 0 0;
+    }
+
+    /* Body card vertikal */
+    .card .card-body {
+        padding: 10px 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* Judul produk */
+    .card .card-body h4 {
+        font-size: 16px;
+        line-height: 1.3;
+        min-height: 40px;
+    }
+
+    /* Harga lebih menonjol */
+    .card .card-body .price {
+        color: #1e90ff;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+}
 
